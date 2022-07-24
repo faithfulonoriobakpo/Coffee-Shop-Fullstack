@@ -28,7 +28,7 @@ def get_drinks():
     except:
         abort(404)
         
-
+# Get drinks detail endpoint
 @app.route('/drinks-detail')
 @requires_auth('get:drinks-detail')
 def get_drinks_detail(jwt):
@@ -41,18 +41,26 @@ def get_drinks_detail(jwt):
             'drinks': drinks
         })
 
+# Add drinks endpoint
+@app.route('/drinks', method=['POST'])
+@requires_auth('post:drinks')
+def add_drink(jwt):
+    body = request.get_json()
 
+try:
+    title = body.get('title')
+    recipe = body.get('recipe')
 
+    drink = Drink(title=title, recipe=json.dumps([recipe]))
+    drink.insert()
 
-'''
-@TODO implement endpoint
-    POST /drinks
-        it should create a new row in the drinks table
-        it should require the 'post:drinks' permission
-        it should contain the drink.long() data representation
-    returns status code 200 and json {"success": True, "drinks": drink} where drink an array containing only the newly created drink
-        or appropriate status code indicating reason for failure
-'''
+    return jsonify({
+        'success': True,
+        'drinks': [drink.long()]
+    })
+except:
+    abort(422)
+
 
 
 '''
