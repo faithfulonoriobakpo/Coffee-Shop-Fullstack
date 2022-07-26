@@ -90,23 +90,27 @@ def edit_drink(jwt, id):
         abort(404)
 
 
-'''
-@TODO implement endpoint
-    DELETE /drinks/<id>
-        where <id> is the existing model id
-        it should respond with a 404 error if <id> is not found
-        it should delete the corresponding row for <id>
-        it should require the 'delete:drinks' permission
-    returns status code 200 and json {"success": True, "delete": id} where id is the id of the deleted record
-        or appropriate status code indicating reason for failure
-'''
+# Delete drink endpoint
+@app.route('/drinks/<id>', methods=['DELETE'])
+@requires_auth('delete:drinks')
+def delete_drink(jwt, id):
 
+    drink = Drink.query.get(id)
+
+    if drink is not None:
+        try:
+            drink.delete()
+
+            return jsonify({
+                'success': True,
+                'delete': drink.id
+            })
+        except:
+            abort(422)
+    else:
+        abort(404)
 
 # Error Handling
-'''
-Example error handling for unprocessable entity
-'''
-
 
 @app.errorhandler(422)
 def unprocessable(error):
