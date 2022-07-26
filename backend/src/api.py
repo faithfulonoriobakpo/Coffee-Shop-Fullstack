@@ -40,6 +40,8 @@ def get_drinks_detail(jwt):
             'success': True,
             'drinks': drinks
         })
+    except:
+        abort(404)
 
 # Add drinks endpoint
 @app.route('/drinks', methods=['POST'])
@@ -47,19 +49,19 @@ def get_drinks_detail(jwt):
 def add_drink(jwt):
     body = request.get_json()
 
-try:
-    title = body.get('title')
-    recipe = body.get('recipe')
+    try:
+        title = body.get('title')
+        recipe = body.get('recipe')
 
-    drink = Drink(title=title, recipe=json.dumps([recipe]))
-    drink.insert()
+        drink = Drink(title=title, recipe=json.dumps([recipe]))
+        drink.insert()
 
-    return jsonify({
-        'success': True,
-        'drinks': [drink.long()]
-    })
-except:
-    abort(422)
+        return jsonify({
+            'success': True,
+            'drinks': [drink.long()]
+        })
+    except:
+        abort(422)
 
 
 # Edit drink endpoint
