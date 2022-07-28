@@ -7,7 +7,7 @@ from urllib.request import urlopen
 
 AUTH0_DOMAIN = 'faithfulonoriobakpo-coffee-shop.us.auth0.com'
 ALGORITHMS = ['RS256']
-API_AUDIENCE = 'coffee-shop'
+API_AUDIENCE = 'http://localhost:5000'
 
 ## AuthError Exception
 '''
