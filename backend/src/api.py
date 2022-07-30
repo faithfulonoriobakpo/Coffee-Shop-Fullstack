@@ -78,7 +78,7 @@ def edit_drink(jwt, id):
             recipe = body.get('recipe')
 
             drink.title = title
-            drink.recipe = recipe
+            drink.recipe = recipe if type(recipe) == str else json.dumps(recipe)
 
             drink.update()
 
